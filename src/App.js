@@ -23,7 +23,7 @@ function App() {
   }
 
   const deleteTask = (id) => {
-    if(window.confirm('Delete?')){
+    if(window.confirm('Are you sure you want to delete?')){
       setTodoList(todoList.filter((task) => task.id !== id));
     }
   }
@@ -40,34 +40,49 @@ function App() {
       })
     )
   }
+
+  const noTask = (props) => {
+    if(props.length <= 0) {
+      return (
+        <tr>
+          <td colSpan={2}>No Task Yet Please Add Task</td>
+        </tr>
+
+      )
+    }
+  }
+  
   return (
     <div className='w-screen h-screen bg-slate-400 overflow-auto'>
-      <div className='bg-white rounded-lg p-4 w-1/2 my-4 mx-auto flex justify-center '>
+      <div className='bg-white rounded-lg p-4 w-1/2 my-4 mx-auto flex justify-center'>
         <form onSubmit={addTask}>
           <input className='border-2 border-black mr-2 text-center' type='text' onChange={handleChange} required/>
-          <button className='bg-blue-500' type='submit'>Add Task</button>
+          <button className='bg-cyan-500 p-2 rounded-full text-white text-xs' type='submit'>Add Task</button>
         </form>
       </div>
-      <div className='bg-white rounded-lg w-1/2 mb-4 mx-auto'>
-        <table className='mx-auto'>
+      <div className='bg-white rounded-lg w-1/2 mb-4 mx-auto p-4'>
+        <table className='mx-auto border-collapse border border-slate-400'>
           <thead>
             <tr>
-              <th>List</th>
-              <th>Action</th>
+              <th className='border-2 border-slate-400'>List</th>
+              <th className='border-2 border-slate-400'>Action</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody className='border-2 border-slate-400'>
           {todoList.map((task) => {
             return(
               <tr>
-                <td><h5 style={{color: task.completed ? 'green' : 'black'}}>{task.taskName}</h5></td>
-                <td>
-                  <button onClick={() => completeTask(task.id)}>Done</button>
-                  <button onClick={() => deleteTask(task.id)}>Delete</button>
+                <td className='border-2 border-slate-400 px-2 text-center'>
+                  <h5 style={{color: task.completed ? 'green' : 'black'}}>{task.taskName}</h5>
+                </td>
+                <td className='border-2 border-slate-400 p-2 space-x-1'>
+                  <button className='bg-cyan-500 p-2 rounded-full text-white text-xs' onClick={() => completeTask(task.id)}>Done</button>
+                  <button className='bg-red-500 p-2 rounded-full text-white text-xs' onClick={() => deleteTask(task.id)}>Delete</button>
                 </td>
               </tr>
             )
           })}
+          {noTask(todoList)}
           </tbody>
         </table>
       </div>
